@@ -16,7 +16,7 @@ public class LoginServiceImpl implements ILoginService{
 
 	@Override
 	public UserBean Login(String username, String password) {
-		return um.login(username, password);
+		return null;
 	}
 
 }

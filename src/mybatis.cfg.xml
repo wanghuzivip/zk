@@ -2,5 +2,14 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org/DTD Config 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
+	<typeAliases>
+		<typeAlias type="com.cy.ssm.beans.User" alias="User"/>
+			<typeAlias type="com.flf.entity.Limit" alias="Limit"/>
+	</typeAliases>
+	
+	
+	<mappers>
+		<mapper resource="mybatis/User.xml"/>
+	</mappers>
 	
 </configuration>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ssm.mapper.UserMapper">
+	<sql id="userAllColumns">id,name,registCode,hasUsed,registTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
+	<sql id="userColumns">name,registCode,hasUsed,registTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
+	
+	<resultMap type="User" id="userResultMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="registCode" property="registCode"/>
+		<result column="hasUsed" property="hasUsed"/>
+		<result column="registTime" property="registTime"/>
+		<result column="limitTime" property="limitTime"/>
+		<result column="lastSynTime" property="lastSynTime"/>
+		<result column="lastSetTime" property="lastSetTime"/>
+		<result column="codeDbName" property="codeDbName"/>
+		<result column="codeDbUrl" property="codeDbUrl"/>
+		<result column="codeDbVersion" property="codeDbVersion"/>
+		<result column="codeDbLastUpdateTime" property="codeDbLastUpdateTime"/>
+		<result column="beizhu" property="beizhu"/>
+	</resultMap>
+	
+	<insert id="addRegistCode" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert tb_user (<include refid="userColumns"/>) values (#{name},#{registCode},#{hasUsed},#{registTime},#{limitTime},#{registTime},#{lastSynTime},#{lastSetTime},#{codeDbName},#{codeDbUrl},#{codeDbVersion},#{codeDbLastUpdateTime},#{beizhu})
+	</insert>
+	
+	<select id="findRegistCode" parameterType="User" resultMap="userResultMap">
+		select * from tb_user where 1=1
+		<if test="id != null and id > 0">
+			and id = #{id}
+		</if>
+		<if test="name!=null">
+			and name like "%"#{name}"%"
+		</if>
+		<if test="registCode != null">
+			and registCode = #{registCode}
+		</if>
+		<if test="hasUsed != null">
+			and hasUsed = #{hasUsed}
+		</if>
+		
+		<if test="codeDbVersion != null">
+			and codeDbVersion = #{codeDbVersion}
+		</if>
+	</select>
+	<result column="name" property="name"/>
+		<result column="registCode" property="registCode"/>
+		<result column="hasUsed" property="hasUsed"/>
+		<result column="registTime" property="registTime"/>
+		<result column="limitTime" property="limitTime"/>
+		<result column="lastSynTime" property="lastSynTime"/>
+		<result column="lastSetTime" property="lastSetTime"/>
+		<result column="codeDbName" property="codeDbName"/>
+		<result column="codeDbUrl" property="codeDbUrl"/>
+		<result column="codeDbVersion" property="codeDbVersion"/>
+		<result column="codeDbLastUpdateTime" property="codeDbLastUpdateTime"/>
+		<result column="beizhu" property="beizhu"/>
+	<update id="updateRegistCode" parameterType="User">
+		update tb_user set 1=1
+		<if test="name != null">
+			, name = #{name}
+		</if>
+		<if test="hasUsed != -1">
+			, hasUsed =#{hasUsed}
+		</if>
+		<if test="registTime != -1">
+			and registTime = #{registTime}
+		</if>
+		<if test="hasUsed != null">
+			and hasUsed = #{hasUsed}
+		</if>
+		<if test="limitTime != -1">
+			and limitTime = #{limitTime}
+		</if>
+		<if test="lastSynTime != -1">
+			and lastSynTime = #{lastSynTime}
+		</if>
+		<if test="codeDbLastUpdateTime != -1">
+			and codeDbLastUpdateTime = #{codeDbLastUpdateTime}
+		</if>
+		<if test="codeDbName != null">
+			and codeDbName = #{codeDbName}
+		</if>
+	 	<if test="codeDbUrl != null">
+			and codeDbUrl = #{codeDbUrl}
+		</if>
+		<if test="codeDbName != null">
+			and codeDbName = #{codeDbName}
+		</if>
+		<if test="beizhu != null">
+			and beizhu = #{beizhu}
+		</if>
+		<if test="codeDbVersion != -1">
+			and codeDbVersion = #{codeDbVersion}
+		</if>
+		where id = #{id} 
+	</update>
+	
+
+	<delete id="deleteRegistCode" parameterType="int">
+		 delete from tb_user where user_id=#{userId} 
+	</delete>
+	
+</mapper>
