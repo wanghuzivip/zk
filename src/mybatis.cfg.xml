@@ -4,12 +4,11 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.cy.ssm.beans.User" alias="User"/>
-			<typeAlias type="com.flf.entity.Limit" alias="Limit"/>
 	</typeAliases>
 	
 	
 	<mappers>
-		<mapper resource="mybatis/User.xml"/>
+		<mapper resource="map/User.xml"/>
 	</mappers>
 	
 </configuration>

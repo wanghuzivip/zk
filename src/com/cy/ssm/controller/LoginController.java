@@ -1,4 +1,4 @@
-package com.cy.ssm.controller;
+/*package com.cy.ssm.controller;
 
 
 import javax.annotation.Resource;
@@ -41,3 +41,4 @@ public class LoginController {
 	
 	
 }
+*/

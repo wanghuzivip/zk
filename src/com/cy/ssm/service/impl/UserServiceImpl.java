@@ -13,7 +13,7 @@ import com.cy.ssm.service.IUserService;
 public class UserServiceImpl implements IUserService{
 	
 	@Resource
-	private UserMapper um;
+	private UserMapper userMapper;
 
 	@Override
 	public String addRegistCode(User user) {
@@ -40,6 +40,16 @@ public class UserServiceImpl implements IUserService{
 	public int deleteRegistCode(User user) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+
+	public UserMapper getUserMapper() {
+		return userMapper;
+	}
+
+
+	public void setUserMapper(UserMapper userMapper) {
+		this.userMapper = userMapper;
 	}
 
 }

@@ -1,8 +1,6 @@
 package com.cy.ssm.controller;
 
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,22 +9,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cy.ssm.beans.User;
+import com.alibaba.fastjson.JSONObject;
 import com.cy.ssm.beans.UserBean;
-import com.cy.ssm.service.ILoginService;
+import com.cy.ssm.service.IUserService;
 
 @Controller
 public class UserController {
 	private Logger log = Logger.getLogger(this.getClass());
 	@Resource
-	private ILoginService loginServiceImpl;
+	private IUserService userServiceImpl;
 	
 	@RequestMapping("/addRegistCode")
-	public  @ResponseBody String addRegistCode(HttpServletRequest req,UserBean user){
-		log.info(user);
-		
-		
-		return "{a:1,b:2}";
+	public  @ResponseBody String addRegistCode(HttpServletRequest req){
+		log.info("---------------this is test-------------------");
+		JSONObject object = new JSONObject();
+		object.put("code", 0);
+		object.put("desc", "ok");
+		return object.toJSONString();
 	}
 	
 	@RequestMapping("/findRegistCode")

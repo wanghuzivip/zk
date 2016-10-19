@@ -21,7 +21,7 @@
 		<result column="beizhu" property="beizhu"/>
 	</resultMap>
 	
-	<insert id="addRegistCode" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+	<!--  <insert id="addRegistCode" parameterType="User" useGeneratedKeys="true" keyProperty="id">
 		insert tb_user (<include refid="userColumns"/>) values (#{name},#{registCode},#{hasUsed},#{registTime},#{limitTime},#{registTime},#{lastSynTime},#{lastSetTime},#{codeDbName},#{codeDbUrl},#{codeDbVersion},#{codeDbLastUpdateTime},#{beizhu})
 	</insert>
 	
@@ -44,18 +44,6 @@
 			and codeDbVersion = #{codeDbVersion}
 		</if>
 	</select>
-	<result column="name" property="name"/>
-		<result column="registCode" property="registCode"/>
-		<result column="hasUsed" property="hasUsed"/>
-		<result column="registTime" property="registTime"/>
-		<result column="limitTime" property="limitTime"/>
-		<result column="lastSynTime" property="lastSynTime"/>
-		<result column="lastSetTime" property="lastSetTime"/>
-		<result column="codeDbName" property="codeDbName"/>
-		<result column="codeDbUrl" property="codeDbUrl"/>
-		<result column="codeDbVersion" property="codeDbVersion"/>
-		<result column="codeDbLastUpdateTime" property="codeDbLastUpdateTime"/>
-		<result column="beizhu" property="beizhu"/>
 	<update id="updateRegistCode" parameterType="User">
 		update tb_user set 1=1
 		<if test="name != null">
@@ -100,6 +88,5 @@
 
 	<delete id="deleteRegistCode" parameterType="int">
 		 delete from tb_user where user_id=#{userId} 
-	</delete>
-	
+	</delete> -->
 </mapper>
