@@ -1,6 +1,7 @@
 package com.cy.ssm.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -17,7 +18,16 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public String addRegistCode(User user) {
-		// TODO Auto-generated method stub
+		try {
+			String registCode = UUID.randomUUID().toString();
+			user.setRegistCode(registCode);
+			if(userMapper.addRegistCode(user)>=1){
+				return registCode;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		return null;
 	}
 
@@ -25,7 +35,16 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public List<User> findRegistCode(User user) {
 		// TODO Auto-generated method stub
-		return null;
+		List<User> users = null;
+		try {
+			users = userMapper.findRegistCode(user);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+		
+		return users;
 	}
 
 

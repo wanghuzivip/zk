@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.ssm.mapper.UserMapper">
-	<sql id="userAllColumns">id,name,registCode,hasUsed,registTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
-	<sql id="userColumns">name,registCode,hasUsed,registTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
+	<sql id="userAllColumns">id,name,registCode,hasUsed,createTime,firstUseTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
+	<sql id="userColumns">name,registCode,hasUsed,createTime,firstUseTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
 	
 	<resultMap type="User" id="userResultMap">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
 		<result column="registCode" property="registCode"/>
 		<result column="hasUsed" property="hasUsed"/>
-		<result column="registTime" property="registTime"/>
+		<result column="createTime" property="createTime"/>
+		<result column="firstUseTime" property="firstUseTime"/>
 		<result column="limitTime" property="limitTime"/>
 		<result column="lastSynTime" property="lastSynTime"/>
 		<result column="lastSetTime" property="lastSetTime"/>
@@ -20,40 +21,43 @@
 		<result column="codeDbLastUpdateTime" property="codeDbLastUpdateTime"/>
 		<result column="beizhu" property="beizhu"/>
 	</resultMap>
-	
-	<!--  <insert id="addRegistCode" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-		insert tb_user (<include refid="userColumns"/>) values (#{name},#{registCode},#{hasUsed},#{registTime},#{limitTime},#{registTime},#{lastSynTime},#{lastSetTime},#{codeDbName},#{codeDbUrl},#{codeDbVersion},#{codeDbLastUpdateTime},#{beizhu})
+	  <insert id="addRegistCode" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert t_user (<include refid="userColumns"/>) values (#{name},#{registCode},#{hasUsed},#{createTime},#{firstUseTime},#{limitTime},#{lastSynTime},#{lastSetTime},#{codeDbName},#{codeDbUrl},#{codeDbVersion},#{codeDbLastUpdateTime},#{beizhu})
 	</insert>
 	
 	<select id="findRegistCode" parameterType="User" resultMap="userResultMap">
-		select * from tb_user where 1=1
+		select * from t_user where 1=1
 		<if test="id != null and id > 0">
 			and id = #{id}
 		</if>
 		<if test="name!=null">
 			and name like "%"#{name}"%"
 		</if>
-		<if test="registCode != null">
+		<if test="registCode != null ">
 			and registCode = #{registCode}
 		</if>
-		<if test="hasUsed != null">
+		<if test="hasUsed > -1">
 			and hasUsed = #{hasUsed}
 		</if>
-		
-		<if test="codeDbVersion != null">
+		<if test="codeDbVersion > 0">
 			and codeDbVersion = #{codeDbVersion}
 		</if>
+		<if test="codeDbName != null">
+			and codeDbName like "%"#{codeDbName}"%"
+		</if>
+		
 	</select>
+	<!--
 	<update id="updateRegistCode" parameterType="User">
-		update tb_user set 1=1
+		update t_user set 1=1
 		<if test="name != null">
 			, name = #{name}
 		</if>
 		<if test="hasUsed != -1">
 			, hasUsed =#{hasUsed}
 		</if>
-		<if test="registTime != -1">
-			and registTime = #{registTime}
+		<if test="firstUseTime != -1">
+			and firstUseTime = #{firstUseTime}
 		</if>
 		<if test="hasUsed != null">
 			and hasUsed = #{hasUsed}
@@ -87,6 +91,6 @@
 	
 
 	<delete id="deleteRegistCode" parameterType="int">
-		 delete from tb_user where user_id=#{userId} 
+		 delete from t_user where user_id=#{userId} 
 	</delete> -->
 </mapper>

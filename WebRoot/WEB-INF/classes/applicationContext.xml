@@ -13,26 +13,7 @@
 	
 	<import resource="ApplicationContext-service.xml"/>
 	
-<!-- 	<context:property-placeholder location="classpath:spring/hcp.properties"/>
-	
-	<bean id="hikariDataSource"
-          class="com.zaxxer.hikari.HikariDataSource" destroy-method="shutdown">
-        <constructor-arg>
-            <bean class="com.zaxxer.hikari.HikariConfig">
-                <property name="driverClassName" value="${hikaricp.jdbc.driverClassName}"/>
-                <property name="jdbcUrl" value="${hikaricp.url}"/>
-                <property name="username" value="${hikaricp.username}"/>
-                <property name="password" value="${hikaricp.password}"/>
-                <property name="connectionTestQuery" value="${hikaricp.connectionTestQuery}"/>
-                <property name="connectionTimeout" value="${hikaricp.connectionTimeout}"/>
-                <property name="idleTimeout" value="${hikaricp.idleTimeout}"/>
-                <property name="maxLifetime" value="${hikaricp.maxLifetime}"/>
-                <property name="maximumPoolSize" value="${hikaricp.maximumPoolSize}"/>
-                <property name="minimumIdle" value="${hikaricp.minimumIdle}"/>
-            </bean>
-        </constructor-arg>
-    </bean>
-	 -->
+
 	<bean id = "dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<property name="jdbcUrl" value="${jdbc.url}" />
