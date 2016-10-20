@@ -13,6 +13,6 @@ public interface IUserService {
     
     public int updateRegistCode(User user) ;
     
-    public int deleteRegistCode(User user) ;
+    public int deleteRegistCode(String registCode) ;
 	
 }

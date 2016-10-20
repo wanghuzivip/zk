@@ -16,7 +16,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cy.ssm.beans.User;
-import com.cy.ssm.beans.UserBean;
 import com.cy.ssm.constants.ErrorCode;
 import com.cy.ssm.service.IUserService;
 
@@ -37,6 +36,7 @@ public class UserController {
 			e.printStackTrace();
 			result.put("status",ErrorCode.PARAMETER_PARSE_ERROR);
 			result.put("status", ErrorCode.PARAMETER_PARSE_ERROR_DESC);
+			log.error("参数解析json对象的时候出错");
 			return result.toJSONString();
 		}
 		try {
@@ -100,6 +100,7 @@ public class UserController {
 			log.error("addRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
 			result.put("code", ErrorCode.UNKNOW);
 			result.put("desc", ErrorCode.UNKNOW_DESC);
+			log.error("服务端出错："+e.getMessage());
 			return result.toJSONString();
 		}
 		
@@ -117,6 +118,7 @@ public class UserController {
 			e.printStackTrace();
 			result.put("status",ErrorCode.PARAMETER_PARSE_ERROR);
 			result.put("status", ErrorCode.PARAMETER_PARSE_ERROR_DESC);
+			log.error("参数解析json对象的时候出错");
 			return result.toJSONString();
 			
 		}
@@ -179,26 +181,129 @@ public class UserController {
 				return result.toJSONString();
 			}
 		} catch (Exception e) {
-			log.error("addRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
+			log.error("findRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
 			result.put("code", ErrorCode.UNKNOW);
 			result.put("desc", ErrorCode.UNKNOW_DESC);
+			log.error("服务端出错："+e.getMessage());
 			return result.toJSONString();
 		}
 		
 	}
 	@RequestMapping("/updateRegistCode")
-	public  @ResponseBody String updateRegistCode(HttpServletRequest req,UserBean user){
-		log.info(user);
-		
-		
-		return "{a:1,b:2}";
+	public  @ResponseBody String updateRegistCode(HttpServletRequest req,String user){
+		log.info("---------------updateRegistCode start-------------------");
+		JSONObject result = new JSONObject();
+		JSONObject userJosn = null;
+		try {
+			userJosn = JSON.parseObject(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.put("status",ErrorCode.PARAMETER_PARSE_ERROR);
+			result.put("status", ErrorCode.PARAMETER_PARSE_ERROR_DESC);
+			log.error("参数解析json对象的时候出错");
+			return result.toJSONString();
+		}
+		try {
+			if(userJosn == null){
+				result.put("status",ErrorCode.PARAMETER_ERROR);
+				result.put("status", ErrorCode.PARAMETER_ERROR_DESC);
+				return result.toJSONString();
+			}
+			User findUser = new User();
+			if(!userJosn.containsKey("registCode")){
+				result.put("status",ErrorCode.PARAMETER_NOREGISTCODE_ERROR);
+				result.put("status", ErrorCode.PARAMETER_NOREGISTCODE_ERROR_DESC);
+				log.error("参数木有传registCode");
+				return result.toJSONString();
+			}
+			findUser.setRegistCode(userJosn.getString("registCode"));
+			if(userJosn.containsKey("name")){
+				findUser.setName(userJosn.getString("name"));
+			}
+			if(userJosn.containsKey("hasUsed")){
+				findUser.setHasUsed(userJosn.getIntValue("hasUsed"));
+			}
+			if(userJosn.containsKey("limitTime")){
+				findUser.setCreateTime(userJosn.getLong("limitTime"));
+			}
+			if(userJosn.containsKey("createTime")){
+				findUser.setCreateTime(userJosn.getLong("createTime"));
+			}
+			if(userJosn.containsKey("firstUseTime")){
+				findUser.setFirstUseTime(userJosn.getLong("firstUseTime"));
+			}
+			if(userJosn.containsKey("lastSynTime")){
+				findUser.setLastSynTime(userJosn.getLong("lastSynTime"));
+			}
+			if(userJosn.containsKey("lastSetTime")){
+				findUser.setLastSetTime(userJosn.getLong("lastSetTime"));
+			}
+			if(userJosn.containsKey("codeDbName")){
+				findUser.setCodeDbName(userJosn.getString("codeDbName"));
+			}
+			if(userJosn.containsKey("codeDbUrl")){
+				findUser.setCodeDbUrl(userJosn.getString("codeDbUrl"));
+			}
+			
+			if(userJosn.containsKey("codeDbVersion")){
+				findUser.setCodeDbVersion(userJosn.getIntValue("codeDbVersion"));
+			}
+			if(userJosn.containsKey("codeDbLastUpdateTime")){
+				findUser.setCodeDbLastUpdateTime(userJosn.getLong("codeDbLastUpdateTime"));
+			}
+			if(userJosn.containsKey("beizhu")){
+				findUser.setBeizhu(userJosn.getString("beizhu"));
+			}
+			int flag = userServiceImpl.updateRegistCode(findUser);
+			if( flag > 0){
+				log.info("---------------updateRegistCode end-------------------");
+				result.put("code", ErrorCode.OK);
+				result.put("desc", ErrorCode.OK_DESC);
+				return result.toJSONString();
+			}else{
+				result.put("code", ErrorCode.UPDATE_ERROR);
+				result.put("desc", ErrorCode.UPDATE_ERROR_DESC);
+				log.error("更新失败");
+				return result.toJSONString();
+			}
+		} catch (Exception e) {
+			log.error("updateRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
+			result.put("code", ErrorCode.UNKNOW);
+			result.put("desc", ErrorCode.UNKNOW_DESC);
+			log.error("服务端出错："+e.getMessage());
+			return result.toJSONString();
+		}
 	}
 	@RequestMapping("/deleteRegistCode")
-	public  @ResponseBody String deleteRegistCode(HttpServletRequest req,UserBean user){
-		log.info(user);
-		
-		
-		return "{a:1,b:2}";
+	public  @ResponseBody String deleteRegistCode(HttpServletRequest req,String registCode){
+		log.info("---------------deleteRegistCode start-------------------");
+		JSONObject result = new JSONObject();
+		try {
+			if(registCode==null||registCode.equals("")){
+				result.put("status",ErrorCode.PARAMETER_NOREGISTCODE_ERROR);
+				result.put("status", ErrorCode.PARAMETER_NOREGISTCODE_ERROR_DESC);
+				log.error("参数木有传registCode");
+				return result.toJSONString();
+			}
+			int flag = userServiceImpl.deleteRegistCode(registCode);
+			if( flag > 0){
+				log.info("---------------deleteRegistCode end-------------------");
+				result.put("code", ErrorCode.OK);
+				result.put("desc", ErrorCode.OK_DESC);
+				return result.toJSONString();
+			}else{
+				result.put("code", ErrorCode.UPDATE_ERROR);
+				result.put("desc", ErrorCode.UPDATE_ERROR_DESC);
+				log.error("删除失败");
+				return result.toJSONString();
+			}
+		} catch (Exception e) {
+			log.error("deleteRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
+			result.put("code", ErrorCode.UNKNOW);
+			result.put("desc", ErrorCode.UNKNOW_DESC);
+			log.error("服务端出错："+e.getMessage());
+			return result.toJSONString();
+		}
 	}
 	
 	public static void main(String[] args) {

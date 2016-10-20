@@ -47,7 +47,7 @@
 		</if>
 		
 	</select>
-	<!--
+	
 	<update id="updateRegistCode" parameterType="User">
 		update t_user set 1=1
 		<if test="name != null">
@@ -88,9 +88,8 @@
 		</if>
 		where id = #{id} 
 	</update>
-	
 
-	<delete id="deleteRegistCode" parameterType="int">
-		 delete from t_user where user_id=#{userId} 
-	</delete> -->
+	<delete id="deleteRegistCode" parameterType="String">
+		 delete from t_user where registCode=#{registCode} 
+	</delete> 
 </mapper>

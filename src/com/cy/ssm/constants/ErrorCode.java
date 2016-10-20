@@ -21,6 +21,22 @@ public class ErrorCode {
 	public static final String PARAMETER_PARSE_ERROR_DESC = "参数解析错误";
 	
 	/**
+	 * 木有registCode
+	 */
+	public static final int PARAMETER_NOREGISTCODE_ERROR = 3;
+	public static final String PARAMETER_NOREGISTCODE_ERROR_DESC = "木有registCode";
+	
+	/**
+	 * 更新失败
+	 */
+	public static final int UPDATE_ERROR = 4;
+	public static final String UPDATE_ERROR_DESC = "更新失败";
+	
+	
+	
+	
+	
+	/**
 	 * 未知异常
 	 */
 	public static final int UNKNOW = -1;

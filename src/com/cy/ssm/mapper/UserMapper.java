@@ -10,9 +10,8 @@ public interface UserMapper {
     
 	public List<User> findRegistCode(User user) throws Exception;
    
-	/*public int updateRegistCode(User user) throws Exception;
+	public int updateRegistCode(User user) throws Exception;
     
-	
-	public int deleteRegistCode(User user) throws Exception;*/
+	public int deleteRegistCode(String registCode) throws Exception;
 	
 }

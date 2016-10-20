@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cy.ssm.mapper.BackPicMapper">
+	<sql id="backPicAllColumns">id,userId,backPicInfo,version</sql>
+	<sql id="backPicColumns">userId,backPicInfo,version</sql>
+	<resultMap type="BackPic" id="userResultMap">
+		<id column="id" property="id"/>
+		<result column="userId" property="userId"/>
+		<result column="backPicInfo" property="backPicInfo"/>
+		<result column="version" property="version"/>
+	</resultMap>
+	<insert id="addBackPic" parameterType="BackPic" useGeneratedKeys="true" keyProperty="id">
+		insert t_user (<include refid="backPicColumns"/>) values (#{userId},#{backPicInfo},#{version})
+	</insert>
+	
+	<select id="findBackPicByUserId" parameterType="long" resultMap="backPicResultMap">
+		select * from t_backPic where userId = #{userId}
+	</select>
+	
+	<update id="updateBackPic" parameterType="BackPic">
+		update t_backPic set 1=1
+		<if test="userId != null">
+			, userId = #{userId}
+		</if>
+		<if test="backPicInfo != null">
+			and backPicInfo = #{backPicInfo}
+		</if>
+		<if test="version > 0">
+			and version = #{version}
+		</if>
+		where id = #{id} 
+	</update>
+	
+	<delete id="deleteBackPicByUserId" parameterType="long">
+		 delete from t_backPic where userId=#{userId} 
+	</delete>
+	
+	<delete id="deleteBackPicById" parameterType="long">
+		 delete from t_backPic where id=#{id} 
+	</delete>
+</mapper>

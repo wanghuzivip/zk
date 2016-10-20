@@ -20,6 +20,7 @@ public class UserServiceImpl implements IUserService{
 	public String addRegistCode(User user) {
 		try {
 			String registCode = UUID.randomUUID().toString();
+			registCode = registCode.replace("-", "");
 			user.setRegistCode(registCode);
 			if(userMapper.addRegistCode(user)>=1){
 				return registCode;
@@ -34,12 +35,10 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public List<User> findRegistCode(User user) {
-		// TODO Auto-generated method stub
 		List<User> users = null;
 		try {
 			users = userMapper.findRegistCode(user);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return null;
 		}
@@ -50,15 +49,29 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public int updateRegistCode(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+		int flag = 0;
+		try {
+			flag = userMapper.updateRegistCode(user);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+		return flag;
 	}
 
 
 	@Override
-	public int deleteRegistCode(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteRegistCode(String registCode) {
+		int flag = 0;
+		try {
+			flag = userMapper.deleteRegistCode(registCode);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+		return flag;
 	}
 
 
