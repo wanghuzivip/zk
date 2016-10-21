@@ -4,11 +4,17 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.cy.ssm.beans.User" alias="User"/>
+		<typeAlias type="com.cy.ssm.beans.Audio" alias="Audio"/>
+		<typeAlias type="com.cy.ssm.beans.Rule" alias="Rule"/>
+		<typeAlias type="com.cy.ssm.beans.BackPic" alias="BackPic"/>
 	</typeAliases>
 	
 	
 	<mappers>
 		<mapper resource="map/User.xml"/>
+		<mapper resource="map/Audio.xml"/>
+		<mapper resource="map/Rule.xml"/>
+		<mapper resource="map/BackPic.xml"/>
 	</mappers>
 	
 </configuration>

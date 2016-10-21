@@ -7,4 +7,16 @@
 		<property name="userMapper" ref="userMapper"/>
 	</bean>
 	
+	<bean id="ruleService" class="com.cy.ssm.service.impl.RuleServiceImpl">
+		<property name="ruleMapper" ref="ruleMapper"/>
+	</bean>
+	
+	<bean id="audioService" class="com.cy.ssm.service.impl.AudioServiceImpl">
+		<property name="audioMapper" ref="audioMapper"/>
+	</bean>
+	
+	<bean id="backPicService" class="com.cy.ssm.service.impl.BackPicServiceImpl">
+		<property name="backPicMapper" ref="backPicMapper"/>
+	</bean>
+	
 </beans>
