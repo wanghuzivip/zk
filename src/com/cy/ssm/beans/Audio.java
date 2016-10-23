@@ -1,15 +1,22 @@
 package com.cy.ssm.beans;
 
 public class Audio {
-	private long id;
+	private String id;
 	private long userId;
+	private String name;
 	private String audioUrl;
 	private String audioText;
-	public long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public long getUserId() {
 		return userId;

@@ -1,14 +1,15 @@
 package com.cy.ssm.beans;
 
 public class BackPic {
-	private long id;
+	private String id;
 	private long userId;
-	private String backPicInfo;
+	private String url;
+	private String name;
 	private long version;
-	public long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public long getUserId() {
@@ -17,16 +18,22 @@ public class BackPic {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	public String getBackPicInfo() {
-		return backPicInfo;
+	public String getUrl() {
+		return url;
 	}
-	public void setBackPicInfo(String backPicInfo) {
-		this.backPicInfo = backPicInfo;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	public long getVersion() {
 		return version;
 	}
 	public void setVersion(long version) {
 		this.version = version;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

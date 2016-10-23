@@ -11,12 +11,12 @@ public interface BackPicMapper {
     
 	public List<BackPic> findBackPicByUserId(long userId) throws Exception;
 	
-	public BackPic findBackPicById(long id) throws Exception;
+	public BackPic findBackPicById(String id) throws Exception;
 	
 	public int updateBackPic(BackPic backPic) throws Exception;
     
 	public int deleteBackPicByUserId(long userId) throws Exception;
 	
-	public int deleteBackPicById(long id) throws Exception;
+	public int deleteBackPicById(String id) throws Exception;
 	
 }

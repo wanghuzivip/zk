@@ -2,24 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.ssm.mapper.AudioMapper">
-	<sql id="audioAllColumns">id,userId,audioUrl,audioText</sql>
-	<sql id="audioColumns">userId,audioUrl,audioText</sql>
-	<resultMap type="Audio" id="userResultMap">
+	<sql id="audioAllColumns">id,userId,name,audioUrl,audioText</sql>
+	<sql id="audioColumns">userId,name,audioUrl,audioText</sql>
+	<resultMap type="Audio" id="audioResultMap">
 		<id column="id" property="id"/>
 		<result column="userId" property="userId"/>
+		<result column="name" property="name"/>
 		<result column="audioUrl" property="audioUrl"/>
 		<result column="audioText" property="audioText"/>
 	</resultMap>
-	<insert id="addAudio" parameterType="Audio" useGeneratedKeys="true" keyProperty="id">
-		insert t_user (<include refid="audioColumns"/>) values (#{userId},#{audioUrl},#{audioText})
+	<insert id="addAudio" parameterType="Audio"  keyProperty="id">
+		insert t_radio (<include refid="audioAllColumns"/>) values (#{id},#{userId},#{name},#{audioUrl},#{audioText})
 	</insert>
 	
 	<select id="findAudioByUserId" parameterType="long" resultMap="audioResultMap">
-		select * from t_audio where userId = #{userId}
+		select * from t_radio where userId = #{userId}
+	</select>
+	
+	<select id="findAudioById" parameterType="String" resultMap="audioResultMap">
+		select * from t_radio where id = #{id}
 	</select>
 	
 	<update id="updateAudio" parameterType="Audio">
-		update t_audio set 1=1
+		update t_radio set 1=1
 		<if test="userId != null">
 			, userId = #{userId}
 		</if>
@@ -33,10 +38,10 @@
 	</update>
 	
 	<delete id="deleteAudioByUserId" parameterType="long">
-		 delete from t_audio where userId=#{userId} 
+		 delete from t_radio where userId=#{userId} 
 	</delete>
 	
-	<delete id="deleteAudioById" parameterType="long">
-		 delete from t_audio where id=#{id} 
+	<delete id="deleteAudioById" parameterType="String">
+		 delete from t_radio where id=#{id} 
 	</delete>
 </mapper>

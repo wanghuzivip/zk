@@ -2,6 +2,7 @@ package com.cy.ssm.beans;
 
 public class Rule {
 	private long id;
+	private String name;
 	private String ruleDbUrl;
 	private String ruleDbVersion;
 	public long getId() {
@@ -21,5 +22,11 @@ public class Rule {
 	}
 	public void setRuleDbVersion(String ruleDbVersion) {
 		this.ruleDbVersion = ruleDbVersion;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

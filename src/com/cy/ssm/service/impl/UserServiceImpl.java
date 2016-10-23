@@ -62,10 +62,10 @@ public class UserServiceImpl implements IUserService{
 
 
 	@Override
-	public int deleteRegistCode(String registCode) {
+	public int deleteRegistCode(long id) {
 		int flag = 0;
 		try {
-			flag = userMapper.deleteRegistCode(registCode);
+			flag = userMapper.deleteRegistCode(id);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

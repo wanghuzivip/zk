@@ -36,7 +36,7 @@ public class AudioServiceImpl implements IAudioService{
 
 
 	@Override
-	public Audio findAudioById(long id) throws Exception {
+	public Audio findAudioById(String id) throws Exception {
 		Audio audio = null;
 		try {
 			audio = audioMapper.findAudioById(id);
@@ -75,7 +75,7 @@ public class AudioServiceImpl implements IAudioService{
 
 
 	@Override
-	public int deleteAudioById(long id) throws Exception {
+	public int deleteAudioById(String id) throws Exception {
 		int flag = 0;
 		try {
 			flag = audioMapper.deleteAudioById(id);

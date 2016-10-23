@@ -3,10 +3,10 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.ssm.mapper.RuleMapper">
 	
-	<sql id="ruleAllColumns">id,ruleDbUrl,ruleDbVersion</sql>
-	<sql id="ruleColumns">ruleDbUrl,ruleDbVersion</sql>
+	<sql id="ruleAllColumns">id,name,ruleDbUrl,ruleDbVersion</sql>
+	<sql id="ruleColumns">name,ruleDbUrl,ruleDbVersion</sql>
 	
-	<resultMap type="Rule" id="userResultMap">
+	<resultMap type="Rule" id="ruleResultMap">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
 		<result column="ruleDbUrl" property="ruleDbUrl"/>
@@ -14,21 +14,14 @@
 	</resultMap>
 	
 	<insert id="addRule" parameterType="Rule" useGeneratedKeys="true" keyProperty="id">
-		insert t_user (<include refid="userColumns"/>) values (#{ruleDbUrl},#{ruleDbVersion})
+		insert t_rule (<include refid="ruleColumns"/>) values (#{name},#{ruleDbUrl},#{ruleDbVersion})
 	</insert>
 	
-	<select id="findRule" parameterType="Rule" resultMap="userResultMap">
-		select * from t_user
+	<select id="findRule" parameterType="Rule" resultMap="ruleResultMap">
+		select * from t_rule
 	</select>
 	
 	<update id="updateRule" parameterType="Rule">
-		update t_user set 1=1
-		<if test="ruleDbUrl != null">
-			, ruleDbUrl = #{ruleDbUrl}
-		</if>
-		<if test="ruleDbVersion != null">
-			and ruleDbVersion = #{ruleDbVersion}
-		</if>
-		where id = #{id} 
+		update t_rule set name = #{name},ruleDbUrl = #{ruleDbUrl}, ruleDbVersion = #{ruleDbVersion}
 	</update>
 </mapper>

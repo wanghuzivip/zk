@@ -45,11 +45,13 @@
 		<if test="codeDbName != null">
 			and codeDbName like "%"#{codeDbName}"%"
 		</if>
-		
+		<if test="start >= 0 and limit > 0 ">
+			limit #{start},#{limit}
+		</if>
 	</select>
 	
 	<update id="updateRegistCode" parameterType="User">
-		update t_user set 1=1
+		update t_user set id = id
 		<if test="name != null">
 			, name = #{name}
 		</if>
@@ -89,7 +91,7 @@
 		where id = #{id} 
 	</update>
 
-	<delete id="deleteRegistCode" parameterType="String">
-		 delete from t_user where registCode=#{registCode} 
+	<delete id="deleteRegistCode" parameterType="long">
+		 delete from t_user where id=#{id} 
 	</delete> 
 </mapper>

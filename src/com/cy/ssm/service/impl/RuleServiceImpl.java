@@ -27,7 +27,6 @@ public class RuleServiceImpl implements IRuleService{
 		try {
 			flag = ruleMapper.addRule(rule);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return 0;
 		}

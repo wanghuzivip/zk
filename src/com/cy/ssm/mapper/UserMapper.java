@@ -1,6 +1,7 @@
 package com.cy.ssm.mapper;
 
 import java.util.List;
+
 import com.cy.ssm.beans.User;
 
 
@@ -12,6 +13,6 @@ public interface UserMapper {
    
 	public int updateRegistCode(User user) throws Exception;
     
-	public int deleteRegistCode(String registCode) throws Exception;
+	public int deleteRegistCode(long id) throws Exception;
 	
 }

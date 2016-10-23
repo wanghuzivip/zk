@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.cy.ssm.beans.BackPic;
-import com.cy.ssm.beans.Rule;
 import com.cy.ssm.mapper.BackPicMapper;
 import com.cy.ssm.service.IBackPicService;
 @Service
@@ -38,7 +37,7 @@ public class BackPicServiceImpl implements IBackPicService{
 		return backPics;
 	}
 	@Override
-	public BackPic findBackPicById(long id) throws Exception {
+	public BackPic findBackPicById(String id) throws Exception {
 		BackPic backPic = null;
 		try {
 			backPic = backPicMapper.findBackPicById(id);
@@ -71,7 +70,7 @@ public class BackPicServiceImpl implements IBackPicService{
 		return flag;
 	}
 	@Override
-	public int deleteBackPicById(long id) throws Exception {
+	public int deleteBackPicById(String id) throws Exception {
 		int flag = 0;
 		try {
 			flag = backPicMapper.deleteBackPicById(id);

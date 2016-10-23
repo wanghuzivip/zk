@@ -34,14 +34,14 @@ public class UserController {
 			userJosn = JSON.parseObject(user);
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.put("status",ErrorCode.PARAMETER_PARSE_ERROR);
+			result.put("code",ErrorCode.PARAMETER_PARSE_ERROR);
 			result.put("status", ErrorCode.PARAMETER_PARSE_ERROR_DESC);
 			log.error("参数解析json对象的时候出错");
 			return result.toJSONString();
 		}
 		try {
 			if(userJosn == null){
-				result.put("status",ErrorCode.PARAMETER_ERROR);
+				result.put("code",ErrorCode.PARAMETER_ERROR);
 				result.put("status", ErrorCode.PARAMETER_ERROR_DESC);
 				return result.toJSONString();
 			}
@@ -107,6 +107,7 @@ public class UserController {
 		
 	}
 	
+	
 	@RequestMapping("/findRegistCode")
 	public  @ResponseBody String findRegistCode(HttpServletRequest req,String user){
 		log.info("---------------findRegistCode start-------------------");
@@ -116,7 +117,7 @@ public class UserController {
 			userJosn = JSON.parseObject(user);
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.put("status",ErrorCode.PARAMETER_PARSE_ERROR);
+			result.put("code",ErrorCode.PARAMETER_PARSE_ERROR);
 			result.put("status", ErrorCode.PARAMETER_PARSE_ERROR_DESC);
 			log.error("参数解析json对象的时候出错");
 			return result.toJSONString();
@@ -124,13 +125,16 @@ public class UserController {
 		}
 		try {
 			if(userJosn == null){
-				result.put("status",ErrorCode.PARAMETER_ERROR);
+				result.put("code",ErrorCode.PARAMETER_ERROR);
 				result.put("status", ErrorCode.PARAMETER_ERROR_DESC);
 				return result.toJSONString();
 			}
 			User findUser = new User();
 			if(userJosn.containsKey("name")){
 				findUser.setName(userJosn.getString("name"));
+			}
+			if(userJosn.containsKey("registCode")){
+				findUser.setRegistCode(userJosn.getString("registCode"));
 			}
 			if(userJosn.containsKey("hasUsed")){
 				findUser.setHasUsed(userJosn.getIntValue("hasUsed"));
@@ -165,6 +169,14 @@ public class UserController {
 			}
 			if(userJosn.containsKey("beizhu")){
 				findUser.setBeizhu(userJosn.getString("beizhu"));
+			}
+			if(userJosn.containsKey("start")){
+				findUser.setStart(userJosn.getIntValue("start"));
+			}
+			if(userJosn.containsKey("limit")){
+				if(userJosn.containsKey("start")){
+					findUser.setLimit(userJosn.getIntValue("limit"));
+				}
 			}
 			List<User> list = userServiceImpl.findRegistCode(findUser);
 			if( list != null && !list.isEmpty()){
@@ -198,63 +210,73 @@ public class UserController {
 			userJosn = JSON.parseObject(user);
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.put("status",ErrorCode.PARAMETER_PARSE_ERROR);
+			result.put("code",ErrorCode.PARAMETER_PARSE_ERROR);
 			result.put("status", ErrorCode.PARAMETER_PARSE_ERROR_DESC);
 			log.error("参数解析json对象的时候出错");
 			return result.toJSONString();
 		}
 		try {
 			if(userJosn == null){
-				result.put("status",ErrorCode.PARAMETER_ERROR);
+				result.put("code",ErrorCode.PARAMETER_ERROR);
 				result.put("status", ErrorCode.PARAMETER_ERROR_DESC);
 				return result.toJSONString();
 			}
-			User findUser = new User();
-			if(!userJosn.containsKey("registCode")){
-				result.put("status",ErrorCode.PARAMETER_NOREGISTCODE_ERROR);
-				result.put("status", ErrorCode.PARAMETER_NOREGISTCODE_ERROR_DESC);
-				log.error("参数木有传registCode");
+			if(!userJosn.containsKey("id")){
+				result.put("code",ErrorCode.PARAMETER_NOUSERID_ERROR);
+				result.put("status", ErrorCode.PARAMETER_NOUSERID_ERROR_DESC);
+				log.error("参数木有传userId");
 				return result.toJSONString();
 			}
-			findUser.setRegistCode(userJosn.getString("registCode"));
+			
+			User fUser = new User();
+			fUser.setId(userJosn.getLong("id"));
+			List<User> users = userServiceImpl.findRegistCode(fUser);
+			if(users == null || users.size() < 1){
+				result.put("code",ErrorCode.PARAMETER_NOUSER_ERROR);
+				result.put("status", ErrorCode.PARAMETER_NOUSER_ERROR_DESC);
+				log.error("木有找到用户");
+				return result.toJSONString();
+			}
+			
+			fUser = users.get(0);
 			if(userJosn.containsKey("name")){
-				findUser.setName(userJosn.getString("name"));
+				fUser.setName(userJosn.getString("name"));
 			}
 			if(userJosn.containsKey("hasUsed")){
-				findUser.setHasUsed(userJosn.getIntValue("hasUsed"));
+				fUser.setHasUsed(userJosn.getIntValue("hasUsed"));
 			}
 			if(userJosn.containsKey("limitTime")){
-				findUser.setCreateTime(userJosn.getLong("limitTime"));
+				fUser.setCreateTime(userJosn.getLong("limitTime"));
 			}
 			if(userJosn.containsKey("createTime")){
-				findUser.setCreateTime(userJosn.getLong("createTime"));
+				fUser.setCreateTime(userJosn.getLong("createTime"));
 			}
 			if(userJosn.containsKey("firstUseTime")){
-				findUser.setFirstUseTime(userJosn.getLong("firstUseTime"));
+				fUser.setFirstUseTime(userJosn.getLong("firstUseTime"));
 			}
 			if(userJosn.containsKey("lastSynTime")){
-				findUser.setLastSynTime(userJosn.getLong("lastSynTime"));
+				fUser.setLastSynTime(userJosn.getLong("lastSynTime"));
 			}
 			if(userJosn.containsKey("lastSetTime")){
-				findUser.setLastSetTime(userJosn.getLong("lastSetTime"));
+				fUser.setLastSetTime(userJosn.getLong("lastSetTime"));
 			}
 			if(userJosn.containsKey("codeDbName")){
-				findUser.setCodeDbName(userJosn.getString("codeDbName"));
+				fUser.setCodeDbName(userJosn.getString("codeDbName"));
 			}
 			if(userJosn.containsKey("codeDbUrl")){
-				findUser.setCodeDbUrl(userJosn.getString("codeDbUrl"));
+				fUser.setCodeDbUrl(userJosn.getString("codeDbUrl"));
 			}
 			
 			if(userJosn.containsKey("codeDbVersion")){
-				findUser.setCodeDbVersion(userJosn.getIntValue("codeDbVersion"));
+				fUser.setCodeDbVersion(userJosn.getIntValue("codeDbVersion"));
 			}
 			if(userJosn.containsKey("codeDbLastUpdateTime")){
-				findUser.setCodeDbLastUpdateTime(userJosn.getLong("codeDbLastUpdateTime"));
+				fUser.setCodeDbLastUpdateTime(userJosn.getLong("codeDbLastUpdateTime"));
 			}
 			if(userJosn.containsKey("beizhu")){
-				findUser.setBeizhu(userJosn.getString("beizhu"));
+				fUser.setBeizhu(userJosn.getString("beizhu"));
 			}
-			int flag = userServiceImpl.updateRegistCode(findUser);
+			int flag = userServiceImpl.updateRegistCode(fUser);
 			if( flag > 0){
 				log.info("---------------updateRegistCode end-------------------");
 				result.put("code", ErrorCode.OK);
@@ -275,17 +297,17 @@ public class UserController {
 		}
 	}
 	@RequestMapping("/deleteRegistCode")
-	public  @ResponseBody String deleteRegistCode(HttpServletRequest req,String registCode){
+	public  @ResponseBody String deleteRegistCode(HttpServletRequest req,long id){
 		log.info("---------------deleteRegistCode start-------------------");
 		JSONObject result = new JSONObject();
 		try {
-			if(registCode==null||registCode.equals("")){
-				result.put("status",ErrorCode.PARAMETER_NOREGISTCODE_ERROR);
+			if(id <=0){
+				result.put("code",ErrorCode.PARAMETER_NOREGISTCODE_ERROR);
 				result.put("status", ErrorCode.PARAMETER_NOREGISTCODE_ERROR_DESC);
 				log.error("参数木有传registCode");
 				return result.toJSONString();
 			}
-			int flag = userServiceImpl.deleteRegistCode(registCode);
+			int flag = userServiceImpl.deleteRegistCode(id);
 			if( flag > 0){
 				log.info("---------------deleteRegistCode end-------------------");
 				result.put("code", ErrorCode.OK);
