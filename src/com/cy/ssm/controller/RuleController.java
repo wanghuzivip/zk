@@ -2,10 +2,8 @@ package com.cy.ssm.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cy.ssm.beans.Rule;
@@ -34,44 +31,10 @@ public class RuleController {
 	private String ruleDir = Tool.getValue("rule.dir");
 	@Resource
 	private IRuleService ruleServiceImpl;
-	/*
-	@RequestMapping(value="/addRule", method=RequestMethod.POST)
-	public @ResponseBody String addRule(@RequestParam MultipartFile[] myfiles, HttpServletRequest request) throws IOException{
-		JSONObject result = new JSONObject();
-		String version = request.getParameter("version");
-		if(version ==null || "".equals(version)){
-			result.put("status",ErrorCode.PARAMETER_ERROR);
-			result.put("status", ErrorCode.PARAMETER_ERROR_DESC);
-			return result.toJSONString();
-		}
-		
-		//如果只是上传一个文件，则只需要MultipartFile类型接收文件即可，而且无需显式指定@RequestParam注解
-		//如果想上传多个文件，那么 这里就要用MultipartFile[]类型来接收文件，并且还要指定@RequestParam注解
-		//并且上传多个文件时，前台表单中的所有<input type="file"/>的name都应该是myfiles，否则参数里的myfiles无法获取到所有上传的文件
-		for(MultipartFile myfile : myfiles){
-			if(myfile.isEmpty()){
-				System.out.println("文件未上传");
-			}else{
-				System.out.println("文件长度: " + myfile.getSize());
-				System.out.println("文件类型: " + myfile.getContentType());
-				System.out.println("文件名称: " + myfile.getName());
-				System.out.println("文件原名: " + myfile.getOriginalFilename());
-				System.out.println("========================================");
-				//如果用的是Tomcat服务器，则文件会上传到\\%TOMCAT_HOME%\\webapps\\YourWebProject\\WEB-INF\\upload\\文件夹中
-				String realPath = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-				//这里不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉，我是看它的源码才知道的
-				FileUtils.copyInputStreamToFile(myfile.getInputStream(), new File(realPath, myfile.getOriginalFilename()));
-			}
-		}
-		
-		return "../../index";
-	}
-	*/
-	
 	@RequestMapping(value="/addOrUpdateRule", method=RequestMethod.POST)
-	public @ResponseBody String addOrUpdateRule(HttpServletRequest request,String version) {
+	public @ResponseBody String addOrUpdateRule(HttpServletRequest request,int version) {
 		JSONObject result = new JSONObject();
-		if(version ==null || "".equals(version)){
+		if(version <= 0 ){
 			result.put("code",ErrorCode.PARAMETER_ERROR);
 			result.put("status", ErrorCode.PARAMETER_ERROR_DESC);
 			return result.toJSONString();
@@ -92,19 +55,27 @@ public class RuleController {
 	                MultipartFile file=multiRequest.getFile(iter.next().toString());
 	                if(file!=null){
 	                	System.out.println(file.getOriginalFilename());
-	                    String path=ruleDir+File.separator+file.getOriginalFilename();
-	                    //上传
+	                	String path=ruleDir+File.separator+file.getOriginalFilename();
+	                    FileUtils.forceMkdir(new File(ruleDir));
+	                    FileUtils.cleanDirectory(new File(ruleDir));
+	                	//上传
 	                    file.transferTo(new File(path));
 	                    Rule rule = ruleServiceImpl.findRule();
 	                    int flag = 0;
 	                    if(rule != null){
-	                    	rule.setRuleDbUrl(path);
+	                    	rule.setPath(path);
+	                    	rule.setRuleDbUrl(Tool.getDownLoadUrl()+"/downloadRule/");
 		                    rule.setRuleDbVersion(version);
+		                    rule.setName(file.getOriginalFilename());
+		                    rule.setUpdateTime(System.currentTimeMillis());
 		                    flag = ruleServiceImpl.updateRule(rule);
 	                    }else{
 	                    	rule = new Rule();
-		                    rule.setRuleDbUrl(path);
+	                    	rule.setPath(path);
+	                    	rule.setRuleDbUrl(Tool.getDownLoadUrl()+"/downloadRule/");
 		                    rule.setRuleDbVersion(version);
+		                    rule.setName(file.getOriginalFilename());
+		                    rule.setUpdateTime(System.currentTimeMillis());
 		                    flag = ruleServiceImpl.addRule(rule);
 	                    }
 	                    if(flag > 0){
@@ -222,7 +193,7 @@ public class RuleController {
 	    		 HttpHeaders headers = new HttpHeaders();
 	    	        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 	    	        headers.setContentDispositionFormData("attachment", rule.getName());
-	    	        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(new File(rule.getRuleDbUrl())),
+	    	        return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(new File(rule.getPath())),
 	    	                                          headers, HttpStatus.OK);
 	    	 }else{
 	    		 return new ResponseEntity<byte[]>(null,null, HttpStatus.NOT_FOUND);

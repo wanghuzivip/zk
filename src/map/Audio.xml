@@ -2,17 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.ssm.mapper.AudioMapper">
-	<sql id="audioAllColumns">id,userId,name,audioUrl,audioText</sql>
-	<sql id="audioColumns">userId,name,audioUrl,audioText</sql>
+	<sql id="audioAllColumns">id,userId,audioName,audioPath,audioUrl,audioTextName,audioTextPath,audioTextUrl,version</sql>
+	<sql id="audioColumns">userId,audioName,audioPath,audioUrl,audioTextName,audioTextPath,audioTextUrl,version</sql>
 	<resultMap type="Audio" id="audioResultMap">
 		<id column="id" property="id"/>
 		<result column="userId" property="userId"/>
-		<result column="name" property="name"/>
+		<result column="audioName" property="audioName"/>
+		<result column="audioPath" property="audioPath"/>
 		<result column="audioUrl" property="audioUrl"/>
-		<result column="audioText" property="audioText"/>
+		<result column="audioTextName" property="audioTextName"/>
+		<result column="audioTextPath" property="audioTextPath"/>
+		<result column="audioTextUrl" property="audioTextUrl"/>
+		<result column="version" property="version"/>
 	</resultMap>
 	<insert id="addAudio" parameterType="Audio"  keyProperty="id">
-		insert t_radio (<include refid="audioAllColumns"/>) values (#{id},#{userId},#{name},#{audioUrl},#{audioText})
+		insert t_radio (<include refid="audioAllColumns"/>) values (#{id},#{userId},#{audioName},#{audioPath},#{audioUrl},#{audioTextName},#{audioTextPath},#{audioTextUrl},#{version})
 	</insert>
 	
 	<select id="findAudioByUserId" parameterType="long" resultMap="audioResultMap">
@@ -22,17 +26,31 @@
 	<select id="findAudioById" parameterType="String" resultMap="audioResultMap">
 		select * from t_radio where id = #{id}
 	</select>
-	
 	<update id="updateAudio" parameterType="Audio">
 		update t_radio set 1=1
 		<if test="userId != null">
 			, userId = #{userId}
 		</if>
-		<if test="audioInfo != null">
-			and audioUrl = #{audioUrl}
+		<if test="audioName != null">
+			and audioName = #{audioName}
 		</if>
 		<if test="version > 0">
-			and audioText = #{audioText}
+			and version = #{version}
+		</if>
+		<if test="audioPath != null">
+			, audioPath = #{audioPath}
+		</if>
+		<if test="audioUrl != null">
+			and audioUrl = #{audioUrl}
+		</if>
+		<if test="audioTextName != null">
+			and audioTextName = #{audioTextName}
+		</if>
+		<if test="audioTextPath != null">
+			and audioTextPath = #{audioTextPath}
+		</if>
+		<if test="audioTextUrl != null">
+			and audioTextUrl = #{audioTextUrl}
 		</if>
 		where id = #{id} 
 	</update>

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.ssm.mapper.UserMapper">
-	<sql id="userAllColumns">id,name,registCode,hasUsed,createTime,firstUseTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
-	<sql id="userColumns">name,registCode,hasUsed,createTime,firstUseTime,limitTime,lastSynTime,lastSetTime,codeDbName,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
+	<sql id="userAllColumns">id,name,registCode,hasUsed,createTime,firstUseTime,limitTime,lastSynTime,lastSetTime,codeDbName,path,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
+	<sql id="userColumns">name,registCode,hasUsed,createTime,firstUseTime,limitTime,lastSynTime,lastSetTime,codeDbName,path,codeDbUrl,codeDbVersion,codeDbLastUpdateTime,beizhu</sql>
 	
 	<resultMap type="User" id="userResultMap">
 		<id column="id" property="id"/>
@@ -16,18 +16,19 @@
 		<result column="lastSynTime" property="lastSynTime"/>
 		<result column="lastSetTime" property="lastSetTime"/>
 		<result column="codeDbName" property="codeDbName"/>
+		<result column="path" property="path"/> 
 		<result column="codeDbUrl" property="codeDbUrl"/>
 		<result column="codeDbVersion" property="codeDbVersion"/>
 		<result column="codeDbLastUpdateTime" property="codeDbLastUpdateTime"/>
 		<result column="beizhu" property="beizhu"/>
 	</resultMap>
 	  <insert id="addRegistCode" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-		insert t_user (<include refid="userColumns"/>) values (#{name},#{registCode},#{hasUsed},#{createTime},#{firstUseTime},#{limitTime},#{lastSynTime},#{lastSetTime},#{codeDbName},#{codeDbUrl},#{codeDbVersion},#{codeDbLastUpdateTime},#{beizhu})
+		insert t_user (<include refid="userColumns"/>) values (#{name},#{registCode},#{hasUsed},#{createTime},#{firstUseTime},#{limitTime},#{lastSynTime},#{lastSetTime},#{codeDbName},#{path},#{codeDbUrl},#{codeDbVersion},#{codeDbLastUpdateTime},#{beizhu})
 	</insert>
 	
 	<select id="findRegistCode" parameterType="User" resultMap="userResultMap">
 		select * from t_user where 1=1
-		<if test="id != null and id > 0">
+		<if test="id > 0">
 			and id = #{id}
 		</if>
 		<if test="name!=null">
@@ -59,34 +60,38 @@
 			, hasUsed =#{hasUsed}
 		</if>
 		<if test="firstUseTime != -1">
-			and firstUseTime = #{firstUseTime}
+			, firstUseTime = #{firstUseTime}
 		</if>
-		<if test="hasUsed != null">
-			and hasUsed = #{hasUsed}
+		<if test="createTime != -1">
+			, createTime = #{createTime}
 		</if>
 		<if test="limitTime != -1">
-			and limitTime = #{limitTime}
+			, limitTime = #{limitTime}
 		</if>
+		
 		<if test="lastSynTime != -1">
-			and lastSynTime = #{lastSynTime}
+			, lastSynTime = #{lastSynTime}
 		</if>
 		<if test="codeDbLastUpdateTime != -1">
-			and codeDbLastUpdateTime = #{codeDbLastUpdateTime}
+			, codeDbLastUpdateTime = #{codeDbLastUpdateTime}
 		</if>
 		<if test="codeDbName != null">
-			and codeDbName = #{codeDbName}
+			, codeDbName = #{codeDbName}
 		</if>
 	 	<if test="codeDbUrl != null">
-			and codeDbUrl = #{codeDbUrl}
+			, codeDbUrl = #{codeDbUrl}
 		</if>
 		<if test="codeDbName != null">
-			and codeDbName = #{codeDbName}
+			, codeDbName = #{codeDbName}
 		</if>
 		<if test="beizhu != null">
-			and beizhu = #{beizhu}
+			, beizhu = #{beizhu}
 		</if>
-		<if test="codeDbVersion != -1">
-			and codeDbVersion = #{codeDbVersion}
+		<if test="codeDbVersion > 0">
+			, codeDbVersion = #{codeDbVersion}
+		</if>
+		<if test="path != null">
+			, path = #{path}
 		</if>
 		where id = #{id} 
 	</update>

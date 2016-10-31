@@ -4,8 +4,9 @@ public class BackPic {
 	private String id;
 	private long userId;
 	private String url;
+	private String path;
 	private String name;
-	private long version;
+	private int version;
 	public String getId() {
 		return id;
 	}
@@ -24,10 +25,10 @@ public class BackPic {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public long getVersion() {
+	public int getVersion() {
 		return version;
 	}
-	public void setVersion(long version) {
+	public void setVersion(int version) {
 		this.version = version;
 	}
 	public String getName() {
@@ -35,5 +36,11 @@ public class BackPic {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getPath() {
+		return path;
+	}
+	public void setPath(String path) {
+		this.path = path;
 	}
 }

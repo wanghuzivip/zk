@@ -65,6 +65,19 @@ public class ErrorCode {
 	public static final int PARAMETER_NOUSER_ERROR = 9;
 	public static final String PARAMETER_NOUSER_ERROR_DESC = "用户不存在";
 	
+	
+	/**
+	 * 版本过小
+	 */
+	public static final int VERSION_SMALL_ERROR = 10;
+	public static final String VERSION_SMALL_ERROR_DESC = "版本过小";
+	
+	/**
+	 * 木有文件
+	 */
+	public static final int NOFILE_ERROR = 11;
+	public static final String NOFILE_ERROR_DESC = "木有文件";
+	/**
 	/**
 	 * 未知异常
 	 */

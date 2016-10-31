@@ -1,10 +1,9 @@
-package com.cy.ssm.beans;
-
-public class User {
+package com.cy.ssm.view;
+public class UserView {
 	private Long id;
 	private String name;
 	private String registCode;
-	private int hasUsed = -1;
+	private int hasUsed;
 	private long createTime;
 	private long firstUseTime;
 	private long lastSynTime;
@@ -12,12 +11,9 @@ public class User {
 	private long limitTime;
 	private String codeDbName;
 	private String codeDbUrl;
-	private String path;
 	private int codeDbVersion;
 	private long codeDbLastUpdateTime;
 	private String beizhu;
-	private int start;
-	private int limit;
 	public Long getId() {
 		return id;
 	}
@@ -66,6 +62,12 @@ public class User {
 	public void setLastSetTime(long lastSetTime) {
 		this.lastSetTime = lastSetTime;
 	}
+	public long getLimitTime() {
+		return limitTime;
+	}
+	public void setLimitTime(long limitTime) {
+		this.limitTime = limitTime;
+	}
 	public String getCodeDbName() {
 		return codeDbName;
 	}
@@ -95,30 +97,6 @@ public class User {
 	}
 	public void setBeizhu(String beizhu) {
 		this.beizhu = beizhu;
-	}
-	public int getStart() {
-		return start;
-	}
-	public void setStart(int start) {
-		this.start = start;
-	}
-	public int getLimit() {
-		return limit;
-	}
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
-	public long getLimitTime() {
-		return limitTime;
-	}
-	public void setLimitTime(long limitTime) {
-		this.limitTime = limitTime;
-	}
-	public String getPath() {
-		return path;
-	}
-	public void setPath(String path) {
-		this.path = path;
 	}
 	
 }

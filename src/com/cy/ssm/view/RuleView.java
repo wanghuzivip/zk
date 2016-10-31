@@ -1,9 +1,8 @@
-package com.cy.ssm.beans;
+package com.cy.ssm.view;
 
-public class Rule {
+public class RuleView {
 	private long id;
 	private String name;
-	private String path;
 	private String ruleDbUrl;
 	private int ruleDbVersion;
 	private long updateTime;
@@ -30,12 +29,6 @@ public class Rule {
 	}
 	public void setRuleDbVersion(int ruleDbVersion) {
 		this.ruleDbVersion = ruleDbVersion;
-	}
-	public String getPath() {
-		return path;
-	}
-	public void setPath(String path) {
-		this.path = path;
 	}
 	public long getUpdateTime() {
 		return updateTime;

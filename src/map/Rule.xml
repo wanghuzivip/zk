@@ -3,18 +3,20 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cy.ssm.mapper.RuleMapper">
 	
-	<sql id="ruleAllColumns">id,name,ruleDbUrl,ruleDbVersion</sql>
-	<sql id="ruleColumns">name,ruleDbUrl,ruleDbVersion</sql>
+	<sql id="ruleAllColumns">id,name,path,ruleDbUrl,ruleDbVersion,updateTime</sql>
+	<sql id="ruleColumns">name,path,ruleDbUrl,ruleDbVersion,updateTime</sql>
 	
 	<resultMap type="Rule" id="ruleResultMap">
 		<id column="id" property="id"/>
 		<result column="name" property="name"/>
+		<result column="path" property="path"/>
 		<result column="ruleDbUrl" property="ruleDbUrl"/>
 		<result column="ruleDbVersion" property="ruleDbVersion"/>
+		<result column="updadteTime" property="updadteTime"/>
 	</resultMap>
 	
 	<insert id="addRule" parameterType="Rule" useGeneratedKeys="true" keyProperty="id">
-		insert t_rule (<include refid="ruleColumns"/>) values (#{name},#{ruleDbUrl},#{ruleDbVersion})
+		insert t_rule (<include refid="ruleColumns"/>) values (#{name},#{path},#{ruleDbUrl},#{ruleDbVersion},#{updateTime})
 	</insert>
 	
 	<select id="findRule" parameterType="Rule" resultMap="ruleResultMap">
@@ -22,6 +24,6 @@
 	</select>
 	
 	<update id="updateRule" parameterType="Rule">
-		update t_rule set name = #{name},ruleDbUrl = #{ruleDbUrl}, ruleDbVersion = #{ruleDbVersion}
+		update t_rule set name = #{name},path = #{path},ruleDbUrl = #{ruleDbUrl}, ruleDbVersion = #{ruleDbVersion}, updateTime = #{updateTime}
 	</update>
 </mapper>

@@ -10,6 +10,7 @@ import java.util.Properties;
  */  
 public class Tool {  
     private static Properties p = new Properties();  
+    private static String downLoadUrl = null;
   
     /** 
      * 读取properties配置文件信息 
@@ -28,4 +29,13 @@ public class Tool {
     {  
         return p.getProperty(key);  
     }  
+    
+    public static String getDownLoadUrl( ){  
+    	if(downLoadUrl == null){
+    		downLoadUrl =  p.getProperty("dowload.url"); 
+        }
+    	 return downLoadUrl;
+    } 
+    
+    
 }
