@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.cy.ssm.beans.User;
+import com.cy.ssm.mapper.AudioMapper;
+import com.cy.ssm.mapper.BackPicMapper;
 import com.cy.ssm.mapper.UserMapper;
 import com.cy.ssm.service.IUserService;
 @Service
@@ -15,6 +17,10 @@ public class UserServiceImpl implements IUserService{
 	
 	@Resource
 	private UserMapper userMapper;
+	@Resource
+	private AudioMapper audioMapper;
+	@Resource
+	private BackPicMapper backPicMapper;
 
 	@Override
 	public String addRegistCode(User user) {
@@ -66,8 +72,9 @@ public class UserServiceImpl implements IUserService{
 		int flag = 0;
 		try {
 			flag = userMapper.deleteRegistCode(id);
+			audioMapper.deleteAudioByUserId(id);
+			backPicMapper.deleteBackPicByUserId(id);
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			return 0;
 		}
@@ -82,6 +89,20 @@ public class UserServiceImpl implements IUserService{
 
 	public void setUserMapper(UserMapper userMapper) {
 		this.userMapper = userMapper;
+	}
+
+
+	@Override
+	public List<User> findUsersByName(String name) {
+		List<User> users = null;
+		try {
+			users = userMapper.findUsersByName(name);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return users;
 	}
 
 }

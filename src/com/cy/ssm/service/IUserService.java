@@ -14,5 +14,7 @@ public interface IUserService {
     public int updateRegistCode(User user) ;
     
     public int deleteRegistCode(long id) ;
+    
+    public List<User> findUsersByName(String name);
 	
 }

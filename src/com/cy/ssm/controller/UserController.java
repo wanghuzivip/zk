@@ -52,13 +52,15 @@ public class UserController {
 	private Logger log = Logger.getLogger(this.getClass());
 	@Resource
 	private IUserService userServiceImpl;
-	@Resource
+	@Resource 
 	private IAudioService audioServiceImpl;
 	@Resource
 	private IBackPicService backPicServiceImpl;
 	@Resource
 	private IRuleService ruleServiceImpl;
 	private String codeDir = Tool.getValue("code.dir");
+	private String backPicDir = Tool.getValue("backPic.dir");
+	private String audioDir = Tool.getValue("audio.dir");
 	
 	@RequestMapping("/addRegistCode")
 	public  @ResponseBody String addRegistCode(HttpServletRequest req,String user){
@@ -236,6 +238,43 @@ public class UserController {
 		}
 		
 	}
+	
+	
+	@RequestMapping("/findUsersByName")
+	public  @ResponseBody String findUsersByName(HttpServletRequest req,String name){
+		log.info("---------------findRegistCode start-------------------");
+		JSONObject result = new JSONObject();
+		try {
+			if(name == null || "".equals(name)){
+				result.put("code",ErrorCode.PARAMETER_ERROR);
+				result.put("desc", ErrorCode.PARAMETER_ERROR_DESC);
+				return result.toJSONString();
+			}
+			List<User> list = userServiceImpl.findUsersByName(name);
+			if( list != null && !list.isEmpty()){
+				log.info("---------------findRegistCode end-------------------");
+				JSONArray array = (JSONArray) JSON.toJSON(list);
+				result.put("code", ErrorCode.OK);
+				result.put("desc", ErrorCode.OK_DESC);
+				result.put("data",array.toJSONString() );
+				return result.toJSONString();
+			}else{
+				log.info("---------------findRegistCode end-------------------");
+				result.put("code", ErrorCode.OK);
+				result.put("desc", ErrorCode.OK_DESC);
+				return result.toJSONString();
+			}
+		} catch (Exception e) {
+			log.error("findRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
+			result.put("code", ErrorCode.UNKNOW);
+			result.put("desc", ErrorCode.UNKNOW_DESC);
+			log.error("服务端出错："+e.getMessage());
+			return result.toJSONString();
+		}
+		
+	}
+	
+	
 	@RequestMapping("/updateRegistCode")
 	public  @ResponseBody String updateRegistCode(HttpServletRequest req,String user){
 		log.info("---------------updateRegistCode start-------------------");
@@ -344,6 +383,22 @@ public class UserController {
 			}
 			int flag = userServiceImpl.deleteRegistCode(id);
 			if( flag > 0){
+				String codeSrc=codeDir+File.separator+id;
+				String dirSrc = backPicDir+File.separator+id;
+				String audioSrc = audioDir+File.separator+"audio"+File.separator+id;
+	            String textSrc = audioDir+File.separator+"text"+File.separator+id;
+	            if(new File(codeSrc).exists()){
+	            	FileUtils.cleanDirectory(new File(codeSrc));	
+	            }
+	            if(new File(dirSrc).exists()){
+		            FileUtils.cleanDirectory(new File(dirSrc));
+	            }
+	            if(new File(audioSrc).exists()){
+		            FileUtils.cleanDirectory(new File(audioSrc));
+	            }
+	            if(new File(textSrc).exists()){
+		            FileUtils.cleanDirectory(new File(textSrc));
+	            }
 				log.info("---------------deleteRegistCode end-------------------");
 				result.put("code", ErrorCode.OK);
 				result.put("desc", ErrorCode.OK_DESC);
@@ -355,6 +410,7 @@ public class UserController {
 				return result.toJSONString();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("deleteRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
 			result.put("code", ErrorCode.UNKNOW);
 			result.put("desc", ErrorCode.UNKNOW_DESC);
@@ -372,38 +428,6 @@ public class UserController {
 		result.setCode(0);
 		result.setDesc("xxx");
 		Data data = new Data();
-	/*	
-		AudioView view = new AudioView();
-		List<AudioItemView> audioItemViews = new ArrayList<AudioItemView>();
-		AudioItemView audioItemView = new AudioItemView();
-		audioItemView.setAudioName("eeee");
-		audioItemView.setAudioTextName("ffff");
-		audioItemView.setAudioTextUrl("5555");
-		audioItemView.setAudioUrl("rrrr");
-		audioItemViews.add(audioItemView);
-		view.setAudios(audioItemViews);
-		view.setId("444");
-		view.setUserId(44);
-		data.setAudio(view);
-		
-		
-		BackPicView backPic = new BackPicView();
-		backPic.setId("22");
-		backPic.setUserId(22);
-		backPic.setVersion(22);
-		backPic.setBackPics(null);
-		data.setBackPic(backPic);
-		data.setRule(null);
-		data.setUser(null);
-		
-		result.setData(data);
-		JSONObject json = (JSONObject) JSON.toJSON(result);
-		System.out.println(json.toJSONString());
-		*/
-		
-		
-	/*	JSONObject result = new JSONObject();
-		JSONObject data = new JSONObject();*/
 		try {
 			if(userId <=0){
 				result.setCode(ErrorCode.PARAMETER_NOREGISTCODE_ERROR);
@@ -463,17 +487,18 @@ public class UserController {
 			List<Audio> audios = audioServiceImpl.findAudioByUserId(userId);
 			if(audios != null && !audios.isEmpty()){
 				AudioView view = new AudioView();
-				view.setUserId(backPics.get(0).getUserId());
-				view.setVersion(backPics.get(0).getVersion());
+				view.setUserId(audios.get(0).getUserId());
+				view.setVersion(audios.get(0).getVersion());
 				List<AudioItemView> audioItemViews = new ArrayList<AudioItemView>();
 				for(Audio audio : audios){
 					AudioItemView audioItemView = new AudioItemView();
+					audioItemView.setId(audio.getId());
 					audioItemView.setAudioName(audio.getAudioName());
 					audioItemView.setAudioUrl(audio.getAudioUrl());
-					if(audio.getAudioTextUrl()==null || "".equals(audio.getAudioTextUrl())){
+					if(audio.getAudioTextUrl()!=null && !"".equals(audio.getAudioTextUrl())){
 						audioItemView.setAudioTextUrl(audio.getAudioTextUrl());
 					}
-					if(audio.getAudioTextName()==null || "".equals(audio.getAudioTextName())){
+					if(audio.getAudioTextName()!=null &&!"".equals(audio.getAudioTextName())){
 						audioItemView.setAudioTextName(audio.getAudioTextName());
 					}
 					audioItemViews.add(audioItemView);
@@ -484,9 +509,10 @@ public class UserController {
 			result.setCode(ErrorCode.OK);
 			result.setDesc(ErrorCode.OK_DESC);
 			result.setData(data);
-			log.error("参数木有传registCode");
+			log.error("获取成功");
 			return  ((JSONObject)JSON.toJSON(result)).toJSONString();
 		} catch (Exception e) {
+			e.printStackTrace();
 			log.error("deleteRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
 			result.setCode(ErrorCode.UNKNOW);
 			result.setDesc(ErrorCode.UNKNOW_DESC);

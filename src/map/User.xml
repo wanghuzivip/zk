@@ -51,6 +51,11 @@
 		</if>
 	</select>
 	
+	
+		<select id="findUsersByName" parameterType="String" resultMap="userResultMap">
+		select * from t_user where name like "%"#{name}"%" or registCode like "%"#{name}"%" or beizhu like "%"#{name}"%"
+	</select>
+	
 	<update id="updateRegistCode" parameterType="User">
 		update t_user set id = id
 		<if test="name != null">

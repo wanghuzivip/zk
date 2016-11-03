@@ -1,7 +1,7 @@
 package com.cy.ssm.controller;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -29,10 +29,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cy.ssm.beans.Audio;
-import com.cy.ssm.beans.BackPic;
 import com.cy.ssm.constants.ErrorCode;
 import com.cy.ssm.service.IAudioService;
-import com.cy.ssm.util.Tool; 
+import com.cy.ssm.util.Tool;
+import com.cy.ssm.view.AudioData;
+import com.cy.ssm.view.AudioItemView;
+import com.cy.ssm.view.AudioView; 
 
 
 @Controller 
@@ -82,15 +84,15 @@ public class AudioController {
 	            MultiValueMap<String,MultipartFile> map =  multiRequest.getMultiFileMap();
 	            
 	            String audioSrc = audioDir+File.separator+"audio"+File.separator+userId;
-	            String textSrc = audioDir+File.separator+"audio"+File.separator+userId;
+	            String textSrc = audioDir+File.separator+"text"+File.separator+userId;
                 FileUtils.forceMkdir(new File(audioSrc));
                 FileUtils.forceMkdir(new File(textSrc));
                 
 	            Set<String> keys = audioJosn.keySet();
 	            if(keys != null && !keys.isEmpty()){
-	            	 FileUtils.cleanDirectory(new File(audioSrc));
+	            	/* FileUtils.cleanDirectory(new File(audioSrc));
 	                 FileUtils.cleanDirectory(new File(textSrc));
-	                 audioServiceImpl.deleteAudioByUserId(userId);
+	                 audioServiceImpl.deleteAudioByUserId(userId);*/
 	            	MultipartFile file = null;
 	            	for(String key : keys){
 	            		if(map.containsKey(key)){
@@ -106,18 +108,6 @@ public class AudioController {
 		                    
 		                    file.transferTo(new File(audioPath));
 		                    String value = audioJosn.getString(key);
-		                    if(value!=null && !"".equalsIgnoreCase(value)){
-		                    	if(map.containsKey(value)){
-				                    String textDir = textSrc+File.separator+id;
-				                    audioTextName =  file.getOriginalFilename();
-				                    audioTextUrl = Tool.getDownLoadUrl()+"/downloadaudio/2/"+id;
-				                    FileUtils.forceMkdir(new File(textDir));
-				                    file = map.get(value).get(0);
-				                    //上传
-				                    audioTextPath=textDir+File.separator+file.getOriginalFilename();
-				                    file.transferTo(new File(audioTextPath));
-		                    	}
-		                    }
 		                    Audio audio = new Audio();
 		                    audio.setAudioUrl(Tool.getDownLoadUrl()+"/downloadaudio/1/"+id);
 		                    audio.setId(id);
@@ -125,7 +115,18 @@ public class AudioController {
 		                    audio.setAudioName(file.getOriginalFilename());
 		                    audio.setAudioPath(audioPath);
 		                    audio.setVersion(version);
-		                    
+		                    if(value!=null && !"".equalsIgnoreCase(value)){
+		                    	if(map.containsKey(value)){
+				                    String textDir = textSrc+File.separator+id;
+				                    audioTextUrl = Tool.getDownLoadUrl()+"/downloadaudio/2/"+id;
+				                    FileUtils.forceMkdir(new File(textDir));
+				                    MultipartFile file2 = map.get(value).get(0);
+				                    audioTextName =  file2.getOriginalFilename();
+				                    //上传
+				                    audioTextPath=textDir+File.separator+file2.getOriginalFilename();
+				                    file2.transferTo(new File(audioTextPath));
+		                    	}
+		                    }
 		                    if(audioTextName!=null&&!"".equals(audioTextName)){
 		                    	 audio.setAudioTextName(audioTextName);
 		                    }
@@ -169,22 +170,81 @@ public class AudioController {
 	@RequestMapping(value="/findaudiosByUserId")
 	public @ResponseBody String findaudiosByUserId(HttpServletRequest request,long userId) {
 		log.info("---------------findaudiosByUserId start-------------------");
-		JSONObject result = new JSONObject();
+		AudioData audioData = new AudioData();
 		try {
 			List<Audio> audios = audioServiceImpl.findAudioByUserId(userId);
 			if( audios != null && !audios.isEmpty()){
+				AudioView audioView = new AudioView();
+				audioView.setUserId(audios.get(0).getUserId());
+				audioView.setVersion(audios.get(0).getVersion());
+				List<AudioItemView> audioItemViews = new ArrayList<AudioItemView>();
+				AudioItemView audioItemView = null;
+				for(Audio audio : audios){
+					audioItemView = new AudioItemView();
+					audioItemView.setAudioName(audio.getAudioName());
+					audioItemView.setAudioTextName(audio.getAudioTextName());
+					audioItemView.setAudioTextUrl(audio.getAudioTextUrl());
+					audioItemView.setAudioUrl(audio.getAudioUrl());
+					audioItemView.setId(audio.getId());
+					audioItemViews.add(audioItemView);
+				}
+				audioView.setAudios(audioItemViews);
+				
 				log.info("---------------findaudiosByUserId end-------------------");
-				JSONArray array = (JSONArray) JSON.toJSON(audios);
-				result.put("code", ErrorCode.OK);
-				result.put("desc", ErrorCode.OK_DESC);
-				result.put("data",array.toJSONString() );
-				return result.toJSONString();
+				audioData.setCode(ErrorCode.OK);
+				audioData.setDesc(ErrorCode.OK_DESC);
+				audioData.setData(audioView);
+				return ((JSONObject)JSON.toJSON(audioData)).toJSONString();
 			}else{
 				log.info("---------------findaudiosByUserId end-------------------");
-				result.put("code", ErrorCode.OK);
-				result.put("desc", ErrorCode.OK_DESC);
-				return result.toJSONString();
+				audioData.setCode(ErrorCode.OK);
+				audioData.setDesc(ErrorCode.OK_DESC);
+				return ((JSONObject)JSON.toJSON(audioData)).toJSONString();
 			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("addRegistCode error|code:"+ErrorCode.UNKNOW+"|desc:"+ErrorCode.UNKNOW_DESC);
+			audioData.setCode(ErrorCode.UNKNOW);
+			audioData.setDesc(ErrorCode.UNKNOW_DESC);
+			log.error("服务端出错："+e.getMessage());
+			return ((JSONObject)JSON.toJSON(audioData)).toJSONString();
+		}
+		
+    }
+	
+
+	@RequestMapping(value="/delaudiosByIds")
+	public @ResponseBody String delaudiosByIds(HttpServletRequest request,String ids) {
+		log.info("---------------delaudiosByIds start-------------------");
+		JSONObject result = new JSONObject();
+		if(ids == null || "".equals(ids)){
+			result.put("code", ErrorCode.PARAMETER_ERROR);
+			result.put("desc", ErrorCode.PARAMETER_ERROR_DESC);
+			return result.toJSONString();
+		}
+		try {
+			String[] idStrs = ids.split(",");
+			for(String s : idStrs){
+				Audio audio = audioServiceImpl.findAudioById(s);
+				if(audio != null){
+					
+					File file = new File(audio.getAudioPath());
+					if(file !=null && file.isFile()){
+						file.delete();
+					}
+					File file1 = new File(audio.getAudioTextPath());
+					if(file1 !=null && file1.isFile()){
+						file1.delete();
+					}
+					int flag = audioServiceImpl.deleteAudioById(s);
+					log.info("deleteAudioById-----id:"+s+"结果："+flag);
+				}
+			}
+			log.info("---------------delaudiosByIds end-------------------");
+			result.put("code", ErrorCode.OK);
+			result.put("desc", ErrorCode.OK_DESC);
+			return result.toJSONString();
 		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -196,6 +256,7 @@ public class AudioController {
 		}
 		
     }
+	
 	
     @RequestMapping("/downloadaudio/{type}/{id}")
     public ResponseEntity<byte[]> download(@PathVariable int type,@PathVariable String id) throws IOException {

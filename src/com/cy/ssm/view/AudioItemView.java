@@ -1,6 +1,7 @@
 package com.cy.ssm.view;
 
 public class AudioItemView {
+	private String id;
 	private String audioName;
 	private String audioUrl;
 	private String audioTextUrl;
@@ -28,5 +29,11 @@ public class AudioItemView {
 	}
 	public void setAudioTextName(String audioTextName) {
 		this.audioTextName = audioTextName;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 }

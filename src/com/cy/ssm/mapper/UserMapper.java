@@ -15,4 +15,5 @@ public interface UserMapper {
     
 	public int deleteRegistCode(long id) throws Exception;
 	
+	public List<User> findUsersByName(String name) throws Exception;
 }
