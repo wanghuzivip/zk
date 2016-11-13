@@ -1,0 +1,168 @@
+用户
+1：添加用户
+http://139.196.112.43:8080/zk/addRegistCode?user={name:123,hasUsed:22,createTime:1000,firstUseTime:10000,limitTime:1000,lastSynTime:1000,lastSetTime:111,codeDbName:'dfvdsf',codeDbUrl:'fvdsf',codeDbVersion:2,codeDbLastUpdateTime:12111,beizhu:'xxx'}
+
+post get都可以
+返回
+{"code":0,"data":"dd8d117b93024d4b912a1ece0389b0d9","desc":"??"}
+data的值就是registCode
+2：条件查询（包含分页）
+例子1：按名字查询
+请求：http://139.196.112.43:8080/zk/findRegistCode?user={name:123}
+结果：{"code":0,"data":"[{\"codeDbName\":\"dfvdsf\",\"lastSetTime\":111,\"start\":0,\"codeDbUrl\":\"fvdsf\",\"limitTime\":0,\"firstUseTime\":10000,\"createTime\":1000,\"lastSynTime\":1000,\"limit\":0,\"name\":\"123\",\"registCode\":\"dd8d117b93024d4b912a1ece0389b0d9\",\"codeDbLastUpdateTime\":12111,\"beizhu\":\"xxx\",\"id\":12,\"hasUsed\":0,\"codeDbVersion\":2},{\"codeDbName\":\"dfvdsf\",\"lastSetTime\":111,\"start\":0,\"codeDbUrl\":\"fvdsf\",\"limitTime\":0,\"firstUseTime\":10000,\"createTime\":1000,\"lastSynTime\":1000,\"limit\":0,\"name\":\"122223\",\"registCode\":\"b4dc456c00e5446f89afbd670cbac1ba\",\"codeDbLastUpdateTime\":12111,\"beizhu\":\"xxx\",\"id\":13,\"hasUsed\":0,\"codeDbVersion\":2}]","desc":"??"}
+
+
+例子2：分页查询
+请求：http://139.196.112.43:8080/zk/findRegistCode?user={start:0,limit:10}
+结果：{"code":0,"data":"[{\"codeDbName\":\"dfvdsf\",\"lastSetTime\":111,\"start\":0,\"codeDbUrl\":\"fvdsf\",\"limitTime\":0,\"firstUseTime\":10000,\"createTime\":1000,\"lastSynTime\":1000,\"limit\":0,\"name\":\"123\",\"registCode\":\"dd8d117b93024d4b912a1ece0389b0d9\",\"codeDbLastUpdateTime\":12111,\"beizhu\":\"xxx\",\"id\":12,\"hasUsed\":0,\"codeDbVersion\":2},{\"codeDbName\":\"dfvdsf\",\"lastSetTime\":111,\"start\":0,\"codeDbUrl\":\"fvdsf\",\"limitTime\":0,\"firstUseTime\":10000,\"createTime\":1000,\"lastSynTime\":1000,\"limit\":0,\"name\":\"122223\",\"registCode\":\"b4dc456c00e5446f89afbd670cbac1ba\",\"codeDbLastUpdateTime\":12111,\"beizhu\":\"xxx\",\"id\":13,\"hasUsed\":0,\"codeDbVersion\":2}]","desc":"??"}
+
+例子2：按照registCode查询
+请求：http://139.196.112.43:8080/zk/findRegistCode?user={registCode:'dd8d117b93024d4b912a1ece0389b0d9'}
+结果：{"code":0,"data":"[{\"codeDbName\":\"dfvdsf\",\"lastSetTime\":111,\"start\":0,\"codeDbUrl\":\"fvdsf\",\"limitTime\":0,\"firstUseTime\":10000,\"createTime\":1000,\"lastSynTime\":1000,\"limit\":0,\"name\":\"123\",\"registCode\":\"dd8d117b93024d4b912a1ece0389b0d9\",\"codeDbLastUpdateTime\":12111,\"beizhu\":\"xxx\",\"id\":12,\"hasUsed\":0,\"codeDbVersion\":2}]","desc":"??"}
+
+依次user={}就是条件集合  随意加减
+
+3：修改用户
+http://139.196.112.43:8080/zk/updateRegistCode?user={name:122223,id=13}
+user={name:122223,id=13}需要修改什么就加什么，id值是必须的 
+{"code":0,"desc":"??"}
+
+
+
+用户的可能时间的一些咱们需要再商量一下   
+//-------------------------------------------------------------------------------------------------------------------------
+
+命令规则
+1：添加或者更新规则
+http://139.196.112.43:8080/zk/addOrUpdateRule?version=1.0.1.1
+结果：{"code":0,"desc":"??"}  
+post
+命令规则数据  流的方式上传
+
+2：查询规则
+http://139.196.112.43:8080/zk/findRule
+{"code":0,"data":"{\"ruleDbVersion\":\"1.0.1.1\",\"id\":1,\"ruleDbUrl\":\"E:/upload/chrome_child.dll\"}","desc":"??"}
+3：下载规则
+http://139.196.112.43:8080/zk/downloadRule
+结果有规则的话直接下载
+如果不存在则暂时会返回404状态码，这个可以再商量
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+背景图片
+1：添加背景图片
+http://139.196.112.43:8080/zk/addBackPic?version=1&userId=123
+结果：{"code":0,"desc":"??"}  
+post
+背景图片数据  流的方式上传
+
+2：查询背景图片
+http://139.196.112.43:8080/zk/findbackPicsByUserId?userId=123
+{"code":0,"data":"[{\"name\":\"chrome_watcher.dll\",\"id\":\"123\",\"userId\":123,\"version\":1,\"url\":\"E:/uploade\\\\123\\\\1\\\\23a0cbf2f7034e8292b0fdd10ff6b925\\\\chrome_watcher.dll\"},{\"name\":\"chrome_100_percent.pak\",\"id\":\"d301253af4924f9684fde0ced931ac3a\",\"userId\":123,\"version\":1,\"url\":\"E:/uploade\\\\123\\\\1\\\\d301253af4924f9684fde0ced931ac3a\\\\chrome_100_percent.pak\"}]","desc":"??"}
+3：下载背景图片
+http://139.196.112.43:8080/zk//downloadbackPic/{id}
+ps:id为背景图片记录的id
+结果有图片的话直接下载
+如果不存在则暂时会返回404状态码，这个可以再商量
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+讲解音频
+1：添加讲解音频
+http://139.196.112.43:8080/zk/addAudio?userId=123&audioText=43253425345344fdvdfgf
+结果：{"code":0,"desc":"??"}  
+post
+讲解音频数据  流的方式上传
+
+2：查询讲解音频
+http://139.196.112.43:8080/zk/findaudiosByUserId?userId=123
+{"code":0,"data":"[{\"audioUrl\":\"E:/uploade\\\\123\\\\2a562b5622524a169959bb2f3ecc8112\\\\chrome_material_100_percent.pak\",\"audioText\":\"43253425345344fdvdfgf\",\"name\":\"chrome_material_100_percent.pak\",\"id\":\"2a562b5622524a169959bb2f3ecc8112\",\"userId\":123}]","desc":"??"}3：下载背景图片
+http://139.196.112.43:8080/zk/downloadaudio/{id}
+ps:id为讲解音频记录的id
+结果有图片的话直接下载
+如果不存在则暂时会返回404状态码，这个可以再商量
+
+
+//-------------------------------------------------------------------------------------------------------------------------
+
+
+错误码定义
+
+
+
+/**
+	 * 调用成功
+	 */
+	public static final int OK = 0;
+	public static final String OK_DESC = "成功";
+	
+	/**
+	 * 参数错误
+	 */
+	public static final int PARAMETER_ERROR = 1;
+	public static final String PARAMETER_ERROR_DESC = "参数错误";
+   
+	/**
+	 * 参数解析错误
+	 */
+	public static final int PARAMETER_PARSE_ERROR = 2;
+	public static final String PARAMETER_PARSE_ERROR_DESC = "参数解析错误";
+	
+	/**
+	 * 木有registCode
+	 */
+	public static final int PARAMETER_NOREGISTCODE_ERROR = 3;
+	public static final String PARAMETER_NOREGISTCODE_ERROR_DESC = "木有registCode";
+	
+	/**
+	 * 更新失败
+	 */
+	public static final int UPDATE_ERROR = 4;
+	public static final String UPDATE_ERROR_DESC = "更新失败";
+	
+	/**
+	 * add失败
+	 */
+	public static final int ADD_ERROR = 5;
+	public static final String ADD_ERROR_DESC = "add失败";
+	
+	/**
+	 * del失败
+	 */
+	public static final int DEL_ERROR = 6;
+	public static final String DEL_ERROR_DESC = "del失败";
+	
+	
+	/**
+	 * addOrUpdate失败
+	 */
+	public static final int ADDORUPDATE_ERROR = 7;
+	public static final String ADDORUPDATE_ERROR_DESC = "addOrUpdate失败";
+	
+	
+	
+	/**
+	 * 木有userId
+	 */
+	public static final int PARAMETER_NOUSERID_ERROR = 8;
+	public static final String PARAMETER_NOUSERID_ERROR_DESC = "木有userId";
+	
+	/**
+	 * 用户不存在
+	 */
+	public static final int PARAMETER_NOUSER_ERROR = 9;
+	public static final String PARAMETER_NOUSER_ERROR_DESC = "用户不存在";
+	
+	/**
+	 * 未知异常
+	 */
+	public static final int UNKNOW = -1;
+	public static final String UNKNOW_DESC = "未知异常";
+	
+
+
+
+
+
+
+

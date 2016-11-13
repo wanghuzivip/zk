@@ -1,0 +1,20 @@
+http://139.196.112.43:8080/zk/getAllData?userId=14
+
+返回
+{"code":0,"data":"{\"rule\":\"{\\\"path\\\":\\\"44\\\",\\\"ruleDbVersion\\\":444,\\\"name\\\":\\\"444\\\",\\\"updateTime\\\":4444,\\\"id\\\":323,\\\"ruleDbUrl\\\":\\\"444\\\"}\",
+\"audio\":\"{\\\"audios\\\":\\\"[{\\\\\\\"audioUrl\\\\\\\":\\\\\\\"44\\\\\\\",\\\\\\\"audioName\\\\\\\":\\\\\\\"44\\\\\\\"}]\\\",\\\"version\\\":44,\\\"userId\\\":12}\",
+\"user\":\"{\\\"codeDbName\\\":\\\"dfvdsf\\\",\\\"lastSetTime\\\":111,\\\"start\\\":0,\\\"codeDbUrl\\\":\\\"fvdsf\\\",\\\"limitTime\\\":0,\\\"firstUseTime\\\":10000,\\\"createTime\\\":1000,\\\"lastSynTime\\\":1000,\\\"limit\\\":0,\\\"name\\\":\\\"123\\\",\\\"registCode\\\":\\\"dd8d117b93024d4b912a1ece0389b0d9\\\",\\\"codeDbLastUpdateTime\\\":12111,\\\"beizhu\\\":\\\"xxx\\\",\\\"id\\\":12,\\\"hasUsed\\\":0,\\\"codeDbVersion\\\":2}\",
+\"backPic\":\"{\\\"backPics\\\":\\\"[{\\\\\\\"name\\\\\\\":\\\\\\\"444\\\\\\\",\\\\\\\"url\\\\\\\":\\\\\\\"444\\\\\\\"}]\\\",\\\"version\\\":44,\\\"userId\\\":12}\"}","desc":"??"}
+
+
+
+
+
+上传音频和文字
+http://139.196.112.43:8080/zk/addAudio?userId=12&data={'icudtl.dat':'libegl.dll','chrome_material_100_percent.pak':'chrome_100_percent.pak'}&version=10
+
+上传文件  文件名称对应data={'icudtl.dat':'libegl.dll','chrome_material_100_percent.pak':'chrome_100_percent.pak'}
+
+
+
+
